@@ -1,0 +1,2 @@
+D:\cosas de clase\FisicaII\Racing-Car-Game\BUILD\Debug\PepeKart.exe
+D:\cosas de clase\FisicaII\Racing-Car-Game\BUILD\Debug\PepeKart.pdb
