@@ -1,2 +1,2 @@
-D:\cosas de clase\FisicaII\Racing-Car-Game\BUILD\Debug\PepeKart.exe
-D:\cosas de clase\FisicaII\Racing-Car-Game\BUILD\Debug\PepeKart.pdb
+C:\Users\alexg\Downloads\Physics_II_-_Bullet3D_-_Handout_02\Debug\3D Physics - class2 Handout.exe
+C:\Users\alexg\Downloads\Physics_II_-_Bullet3D_-_Handout_02\Debug\3D Physics - class2 Handout.pdb

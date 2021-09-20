@@ -4,61 +4,31 @@
 #include "p2List.h"
 #include "Primitive.h"
 
-#include "Bullet/include/btBulletDynamicsCommon.h"
-
-// Recommended scale is 1.0f == 1 meter, no less than 0.2 objects
-#define GRAVITY btVector3(0.0f, -10.0f, 0.0f) 
+// TODO 1: Add Bullet common include btBulletDynamicsCommon.h
 
 class DebugDrawer;
-struct PhysBody3D;
-struct PhysVehicle3D;
-struct VehicleInfo;
 
 class ModulePhysics3D : public Module
 {
 public:
-	//ModulePhysics3D(Application* app, bool start_enabled = true);
-    ModulePhysics3D(bool start_enabled = true);
+	ModulePhysics3D(Application* app, bool start_enabled = true);
 	~ModulePhysics3D();
 
-	bool Init();
 	bool Start();
 	update_status PreUpdate(float dt);
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-    void AddBodyToWorld(btRigidBody* body);
-
-    void RemoveBodyFromWorld(btRigidBody* body);
-
-	PhysBody3D* AddBody(const Sphere& sphere, float mass = 1.0f);
-	PhysBody3D* AddBody(const Cube& cube, float mass = 1.0f);
-	PhysBody3D* AddBody(const Cylinder& cylinder, float mass = 1.0f);
-	PhysVehicle3D* AddVehicle(const VehicleInfo& info);
-
-	void AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB);
-	void AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB, const vec3& axisS, const vec3& axisB, bool disable_collision = false);
-
 private:
 
 	bool debug;
 
-	btDefaultCollisionConfiguration*	collision_conf;
-	btCollisionDispatcher*				dispatcher;
-	btBroadphaseInterface*				broad_phase;
-	btSequentialImpulseConstraintSolver* solver;
-	btDiscreteDynamicsWorld*			world;
-	btDefaultVehicleRaycaster*			vehicle_raycaster;
-	DebugDrawer*						debug_draw;
-
-	p2List<btCollisionShape*> shapes;
-	p2List<PhysBody3D*> bodies;
-	p2List<btDefaultMotionState*> motions;
-	p2List<btTypedConstraint*> constraints;
-	p2List<PhysVehicle3D*> vehicles;
+	DebugDrawer* debug_draw;
 };
 
+//TODO 4: Uncomment the declaration of the Debug Drawer
+/*
 class DebugDrawer : public btIDebugDraw
 {
 public:
@@ -76,3 +46,4 @@ public:
 	Line line;
 	Primitive point;
 };
+*/
