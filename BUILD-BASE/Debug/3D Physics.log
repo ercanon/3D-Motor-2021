@@ -1,2 +1,10 @@
-﻿  ModuleCamera3D.cpp
-  3D Physics.vcxproj -> C:\Users\ercanon\Documents\GitHub\3D-Motor-2021\BUILD-BASE\Debug\3D Physics - class2 Handout.exe
+﻿  Application.cpp
+  imgui_impl_sdl.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\winnt.h(2482,40): error C2338: Windows headers require the default packing option. Changing this can lead to memory corruption. This diagnostic can be disabled by building with WINDOWS_IGNORE_PACKING_MISMATCH defined.
+  imgui_impl_sdlrenderer.cpp
+D:\cosas de clase\Motores\3D-Motor-2021\BUILD-BASE\imgui\imgui_impl_sdlrenderer.cpp(31,1): fatal error C1189: #error:  This backend requires SDL 2.0.17+ because of SDL_RenderGeometry() function
+  imgui_tables.cpp
+  Main.cpp
+  ModuleSceneIntro.cpp
+  Timer.cpp
+  Generating Code...

@@ -2,3 +2,5 @@ C:\Users\alexg\Downloads\Physics_II_-_Bullet3D_-_Handout_02\Debug\3D Physics - c
 C:\Users\alexg\Downloads\Physics_II_-_Bullet3D_-_Handout_02\Debug\3D Physics - class2 Handout.pdb
 C:\Users\ercanon\Documents\GitHub\3D-Motor-2021_old1\BUILD-BASE\Debug\3D Physics - class2 Handout.exe
 C:\Users\ercanon\Documents\GitHub\3D-Motor-2021\BUILD-BASE\Debug\3D Physics - class2 Handout.exe
+D:\cosas de clase\Motores\3D-Motor-2021\BUILD-BASE\Debug\3D Physics - class2 Handout.exe
+D:\cosas de clase\Motores\3D-Motor-2021\BUILD-BASE\Debug\3D Physics - class2 Handout.pdb
