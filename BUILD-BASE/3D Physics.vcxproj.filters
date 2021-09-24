@@ -90,9 +90,6 @@
     <ClInclude Include="imgui\imgui_impl_sdl.h">
       <Filter>Sources\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="imgui\imgui_impl_sdlrenderer.h">
-      <Filter>Sources\imgui</Filter>
-    </ClInclude>
     <ClInclude Include="imgui\imgui_internal.h">
       <Filter>Sources\imgui</Filter>
     </ClInclude>
@@ -165,9 +162,6 @@
       <Filter>Sources\imgui</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui_impl_sdl.cpp">
-      <Filter>Sources\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\imgui_impl_sdlrenderer.cpp">
       <Filter>Sources\imgui</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui_tables.cpp">
