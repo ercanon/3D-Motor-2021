@@ -1,1 +1,18 @@
-﻿  3D Physics.vcxproj -> C:\Users\alexgf3\Desktop\3D-Motor-2021\BUILD-BASE\Debug\3D Physics - class2 Handout.exe
+﻿  Application.cpp
+  Light.cpp
+  Main.cpp
+  ModuleAudio.cpp
+  ModuleCamera3D.cpp
+  ModuleImGui.cpp
+  ModuleInput.cpp
+  ModulePhysics3D.cpp
+C:\Users\alexgf3\Desktop\3D-Motor-2021\BUILD-BASE\ModulePhysics3D.cpp(15,19): warning C4150: deletion of pointer to incomplete type 'DebugDrawer'; no destructor called
+C:\Users\alexgf3\Desktop\3D-Motor-2021\BUILD-BASE\ModulePhysics3D.h(7): message : see declaration of 'DebugDrawer'
+  ModuleRenderer3D.cpp
+  ModuleSceneIntro.cpp
+  ModuleWindow.cpp
+  Primitive.cpp
+  Timer.cpp
+  log.cpp
+  Generating Code...
+  3D Physics.vcxproj -> C:\Users\alexgf3\Desktop\3D-Motor-2021\BUILD-BASE\Debug\3D Physics - class2 Handout.exe
