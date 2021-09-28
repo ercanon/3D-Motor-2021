@@ -16,8 +16,19 @@ public:
 	~ModuleImGui();
 
 	bool Init();
+	update_status PreUpdate(float dt);
 	update_status Update(float dt);
+	update_status PostUpdate(float dt);
 	bool CleanUp();
+
+public: 
+
+	SDL_GLContext gl_context;
+	ImGuiIO io;
+
+	bool show_demo_window;
+	bool show_another_window;
+	ImVec4 clear_color;
 };
 
 #endif
