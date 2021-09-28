@@ -24,7 +24,7 @@ public:
 public: 
 
 	SDL_GLContext gl_context;
-	ImGuiIO io;
+	ImGuiIO io_copy;
 
 	bool show_demo_window;
 	bool show_another_window;

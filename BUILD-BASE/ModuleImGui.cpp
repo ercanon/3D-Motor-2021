@@ -36,13 +36,14 @@ bool ModuleImGui::Init()
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    io = ImGui::GetIO(); (void)io;
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
     //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
     //io.ConfigViewportsNoAutoMerge = true;
     //io.ConfigViewportsNoTaskBarIcon = true;
+    io_copy = io;
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
@@ -124,7 +125,7 @@ update_status ModuleImGui::PostUpdate(float dt)
 {
     // Rendering
     ImGui::Render();
-    glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
+    glViewport(0, 0, (int)io_copy.DisplaySize.x, (int)io_copy.DisplaySize.y);
     glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
     //glClear(GL_COLOR_BUFFER_BIT);
     //glUseProgram(0); // You may want this if using this code in an OpenGL 3+ context where shaders may be bound
@@ -133,7 +134,7 @@ update_status ModuleImGui::PostUpdate(float dt)
     // Update and Render additional Platform Windows
     // (Platform functions may change the current OpenGL context, so we save/restore it to make it easier to paste this code elsewhere.
     //  For this specific demo app we could also call SDL_GL_MakeCurrent(window, gl_context) directly)
-    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    if (io_copy.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
         SDL_Window* backup_current_window = SDL_GL_GetCurrentWindow();
         SDL_GLContext backup_current_context = SDL_GL_GetCurrentContext();
