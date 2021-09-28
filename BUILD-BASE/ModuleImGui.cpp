@@ -63,7 +63,7 @@ bool ModuleImGui::Init()
     // Our state
     show_demo_window = true;
     show_another_window = false;
-    clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+    clear_color = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
 
 	return ret;
 }
@@ -125,7 +125,7 @@ update_status ModuleImGui::PostUpdate(float dt)
     // Rendering
     ImGui::Render();
     glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
-    //glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
+    glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
     //glClear(GL_COLOR_BUFFER_BIT);
     //glUseProgram(0); // You may want this if using this code in an OpenGL 3+ context where shaders may be bound
     ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
