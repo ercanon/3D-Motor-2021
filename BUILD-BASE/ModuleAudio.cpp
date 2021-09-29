@@ -54,11 +54,11 @@ bool ModuleAudio::CleanUp()
 		Mix_FreeMusic(music);
 	}
 
-	list <Mix_Chunk*>* item;
+	list <Mix_Chunk*>::iterator item;
 
-	for(item = fx.front(); item != NULL; item = item->next)
+	for(item = fx.begin(); *item != NULL; item = item++)
 	{
-		Mix_FreeChunk(item->data);
+		Mix_FreeChunk(*item);
 	}
 
 	fx.clear();
