@@ -54,9 +54,9 @@ bool ModuleAudio::CleanUp()
 		Mix_FreeMusic(music);
 	}
 
-	p2List_item<Mix_Chunk*>* item;
+	list <Mix_Chunk*>* item;
 
-	for(item = fx.getFirst(); item != NULL; item = item->next)
+	for(item = fx.front(); item != NULL; item = item->next)
 	{
 		Mix_FreeChunk(item->data);
 	}
@@ -132,8 +132,8 @@ unsigned int ModuleAudio::LoadFx(const char* path)
 	}
 	else
 	{
-		fx.add(chunk);
-		ret = fx.count();
+		fx.push_back(chunk);
+		ret = fx.size();
 	}
 
 	return ret;

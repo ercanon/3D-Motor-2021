@@ -34,12 +34,12 @@ Application::Application()
 
 Application::~Application()
 {
-	p2List_item<Module*>* item = list_modules.getLast();
+	list <Module*>* item = list_modules.back();
 
 	while(item != NULL)
 	{
-		delete item->data;
-		item = item->prev;
+		delete item->data; // mirar data que es en el p2list
+		item = item->prev; // coger el previo de la lista
 	}
 }
 
@@ -48,17 +48,17 @@ bool Application::Init()
 	bool ret = true;
 
 	// Call Init() in all modules
-	p2List_item<Module*>* item = list_modules.getFirst();
+	list <Module*>* item = list_modules.front();
 
 	while(item != NULL && ret == true)
 	{
 		ret = item->data->Init();
-		item = item->next;
+		item = item->next; //coger el siguiente de la lista
 	}
 
 	// After all Init calls we call Start() in all modules
 	LOG("Application Start --------------");
-	item = list_modules.getFirst();
+	item = list_modules.front();
 
 	while(item != NULL && ret == true)
 	{
@@ -88,7 +88,7 @@ update_status Application::Update()
 	update_status ret = UPDATE_CONTINUE;
 	PrepareUpdate();
 	
-	p2List_item<Module*>* item = list_modules.getFirst();
+	list <Module*>* item = list_modules.front();
 	
 	while(item != NULL && ret == UPDATE_CONTINUE)
 	{
@@ -96,7 +96,7 @@ update_status Application::Update()
 		item = item->next;
 	}
 
-	item = list_modules.getFirst();
+	item = list_modules.front();
 
 	while(item != NULL && ret == UPDATE_CONTINUE)
 	{
@@ -104,7 +104,7 @@ update_status Application::Update()
 		item = item->next;
 	}
 
-	item = list_modules.getFirst();
+	item = list_modules.front();
 
 	while(item != NULL && ret == UPDATE_CONTINUE)
 	{
@@ -119,7 +119,7 @@ update_status Application::Update()
 bool Application::CleanUp()
 {
 	bool ret = true;
-	p2List_item<Module*>* item = list_modules.getLast();
+	list <Module*>* item = list_modules.back();
 
 	while(item != NULL && ret == true)
 	{
