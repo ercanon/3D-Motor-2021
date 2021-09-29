@@ -1,16 +1,14 @@
 #pragma once
 
 //#include "p2List.h"
-#include <iostream>
+#include <stdio.h>
 #include <list>
-#include <iterator>
 #include "Globals.h"
 #include "Timer.h"
 #include "Module.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
-#include "ModuleAudio.h"
-#include "ModuleSceneIntro.h"
+#include "ModuleScene3D.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
 #include "ModulePhysics3D.h"
@@ -23,8 +21,7 @@ class Application
 public:
 	ModuleWindow* window;
 	ModuleInput* input;
-	ModuleAudio* audio;
-	ModuleSceneIntro* scene_intro;
+	ModuleScene3D* scene3D;
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;
 	ModulePhysics3D* physics;
@@ -34,7 +31,7 @@ private:
 
 	Timer	ms_timer;
 	float	dt;
-	list <Module*> list_modules;
+	list<Module*> list_modules;
 
 public:
 
