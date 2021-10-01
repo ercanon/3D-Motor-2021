@@ -327,6 +327,9 @@
     <ClInclude Include="MathGeoLib\Math\vec2d.h">
       <Filter>Sources\MathGeoLib\Header</Filter>
     </ClInclude>
+    <ClInclude Include="Json\json.hpp">
+      <Filter>Sources\Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
