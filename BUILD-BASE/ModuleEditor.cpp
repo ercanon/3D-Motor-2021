@@ -1,16 +1,16 @@
 #include "Application.h"
-#include "ModuleImGui.h"
+#include "ModuleEditor.h"
 
-ModuleImGui::ModuleImGui(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 }
 
 // Destructor
-ModuleImGui::~ModuleImGui()
+ModuleEditor::~ModuleEditor()
 {
 }
 
-bool ModuleImGui::Init()
+bool ModuleEditor::Init()
 {
 	bool ret = true;
 
@@ -69,7 +69,7 @@ bool ModuleImGui::Init()
 	return ret;
 }
 
-update_status ModuleImGui::PreUpdate(float dt)
+update_status ModuleEditor::PreUpdate(float dt)
 {
     // Start the Dear ImGui frame
     ImGui_ImplOpenGL2_NewFrame();
@@ -79,7 +79,7 @@ update_status ModuleImGui::PreUpdate(float dt)
     return UPDATE_CONTINUE;
 }
 
-update_status ModuleImGui::Update(float dt)
+update_status ModuleEditor::Update(float dt)
 {
     // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
     if (show_demo_window)
@@ -121,7 +121,7 @@ update_status ModuleImGui::Update(float dt)
     return UPDATE_CONTINUE;
 }
 
-update_status ModuleImGui::PostUpdate(float dt)
+update_status ModuleEditor::PostUpdate(float dt)
 {
     // Rendering
     ImGui::Render();
@@ -146,7 +146,7 @@ update_status ModuleImGui::PostUpdate(float dt)
     return UPDATE_CONTINUE;
 }
 
-bool ModuleImGui::CleanUp()
+bool ModuleEditor::CleanUp()
 {
 	bool ret = true;
 

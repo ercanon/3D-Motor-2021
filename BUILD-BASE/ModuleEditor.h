@@ -1,5 +1,5 @@
-#ifndef __ModuleImGui_H__
-#define __ModuleImGui_H__
+#ifndef __ModuleEditor_H__
+#define __ModuleEditor_H__
 
 #include "Module.h"
 #include "imgui.h"
@@ -8,12 +8,12 @@
 #include "SDL/include/SDL.h"
 #include "SDL/include/SDL_opengl.h"
 
-class ModuleImGui : public Module
+class ModuleEditor : public Module
 {
 public:
 	
-	ModuleImGui(Application* app, bool start_enabled = true);
-	~ModuleImGui();
+	ModuleEditor(Application* app, bool start_enabled = true);
+	~ModuleEditor();
 
 	bool Init();
 	update_status PreUpdate(float dt);
