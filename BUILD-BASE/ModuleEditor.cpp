@@ -270,6 +270,47 @@ update_status ModuleEditor::Update(float dt)
             ImGui::TreePop();
         }
 
+        if (ImGui::TreeNode("Render Options"))
+        {
+            if (ImGui::Checkbox("Depth Test", &depthTest))
+            {
+                if (depthTest) glEnable(GL_DEPTH_TEST);
+                else glDisable(GL_DEPTH_TEST);
+            }
+            if (ImGui::Checkbox("Cull Face", &cullFace))
+            {
+                if (cullFace) glEnable(GL_CULL_FACE);
+                else glDisable(GL_CULL_FACE);
+            }
+            if (ImGui::Checkbox("Lighting", &lighting))
+            {
+                if (lighting) glEnable(GL_LIGHTING);
+                else glDisable(GL_LIGHTING);
+            }
+            if (ImGui::Checkbox("Color Material", &colorMaterial))
+            {
+                if (colorMaterial) glEnable(GL_COLOR_MATERIAL);
+                else glDisable(GL_COLOR_MATERIAL);
+            }
+            if (ImGui::Checkbox("Texture 2D", &texture))
+            {
+                if (texture) glEnable(GL_TEXTURE_2D);
+                else glDisable(GL_TEXTURE_2D);
+            }
+            if (ImGui::Checkbox("Wireframe", &wireframe))
+            {
+                if (wireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+                else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            }
+            if (ImGui::Checkbox("Fog", &fog))
+            {
+                if (fog) glEnable(GL_FOG);
+                else glDisable(GL_FOG);
+            }
+
+            ImGui::TreePop();
+        }
+
         if (ImGui::GetWindowPos().x < 0 ||
             ImGui::GetWindowPos().y < 0 ||
             ImGui::GetWindowPos().x + ImGui::GetWindowSize().x > actualwidth ||

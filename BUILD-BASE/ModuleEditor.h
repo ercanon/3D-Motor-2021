@@ -51,6 +51,15 @@ public:
 	bool fulldesktop = false;
 	bool resizeActive = false;
 
+	bool depthTest = true;
+	bool cullFace = true;
+	bool lighting = true;
+	bool colorMaterial = true;
+	bool texture = true;
+	bool wireframe = false;
+	bool fog = false;
+
+
 	// Framerate config
 	std::vector<float> fps_log;
 	std::vector<float> ms_log;

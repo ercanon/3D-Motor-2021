@@ -106,6 +106,11 @@ bool ModuleRenderer3D::Init()
 		glEnable(GL_LIGHTING);
 		glEnable(GL_COLOR_MATERIAL);
 		glEnable(GL_TEXTURE_2D);
+
+		GLfloat FogCol[] = { 0.8f, 0.8f, 0.8f };
+		glFogfv(GL_FOG_COLOR, FogCol);
+		glFogi(GL_FOG_MODE, GL_EXP);
+		glFogf(GL_FOG_DENSITY, 0.05f);
 	}
 
 	// Projection matrix for
