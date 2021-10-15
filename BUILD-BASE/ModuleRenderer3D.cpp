@@ -1,12 +1,12 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
-#include "SDL\include\SDL_opengl.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
+#pragma comment (lib, "glew32.lib")	  /* link Microsoft OpenGL lib   */
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -29,9 +29,23 @@ bool ModuleRenderer3D::Init()
 		LOG("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
+
+	GLenum error = glewInit();
+	
+	if (error != GLEW_OK)
+	{
+		LOG("Glew library could not initialize. Error %s\n", glewGetErrorString(error));
+		ret = false;
+	}
+	else LOG("Using Glew version %s", glewGetString(GLEW_VERSION));
 	
 	if(ret == true)
 	{
+		LOG("Vendor: %s", glGetString(GL_VENDOR));
+		LOG("Renderer: %s", glGetString(GL_RENDERER));
+		LOG("OpenGL version supported %s", glGetString(GL_VERSION));
+		LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+
 		//Use Vsync
 		if(VSYNC && SDL_GL_SetSwapInterval(1) < 0)
 			LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
@@ -41,7 +55,7 @@ bool ModuleRenderer3D::Init()
 		glLoadIdentity();
 
 		//Check for error
-		GLenum error = glGetError();
+		error = glGetError();
 		if(error != GL_NO_ERROR)
 		{
 			LOG("Error initializing OpenGL! %s\n", gluErrorString(error));
@@ -91,6 +105,7 @@ bool ModuleRenderer3D::Init()
 		lights[0].Active(true);
 		glEnable(GL_LIGHTING);
 		glEnable(GL_COLOR_MATERIAL);
+		glEnable(GL_TEXTURE_2D);
 	}
 
 	// Projection matrix for
