@@ -109,7 +109,6 @@ update_status ModuleEditor::PreUpdate(float dt)
 
 update_status ModuleEditor::Update(float dt)
 {
-    SDL_GetWindowPosition(App->window->window, &posWindowX, &posWindowY);
     SDL_GetWindowSize(App->window->window, &actualwidth, &actualheight);
     LogToConsole();
 
@@ -161,6 +160,7 @@ update_status ModuleEditor::Update(float dt)
                 {
                     glViewport(0, 0, width, height);
                     Resize(0);
+                    resizeActive = true;
                 }
             }
 
@@ -169,8 +169,6 @@ update_status ModuleEditor::Update(float dt)
                 if (fulldesktop)
                 {
                     SDL_SetWindowFullscreen(App->window->window, 0);
-                    Resize(0);
-                    //resizeActive = true;
                     fulldesktop = false;
                     borderless = true;
                 }
@@ -182,8 +180,6 @@ update_status ModuleEditor::Update(float dt)
                     SDL_GetWindowPosition(App->window->window, &posX, &posY);
                     SDL_SetWindowPosition(App->window->window, 0, 30);
                     SDL_SetWindowSize(App->window->window, DM.w, DM.h - 71);
-                    Resize(0);
-                    //resizeActive = true;
                     glViewport(0, 0, DM.w, DM.h);
                     SDL_GetWindowSize(App->window->window, &modifywidth, &modifyheight);
                     SDL_SetWindowBordered(App->window->window, SDL_bool(borderless));
@@ -193,10 +189,9 @@ update_status ModuleEditor::Update(float dt)
                     resizable = true;
                     SDL_SetWindowSize(App->window->window, width, height);
                     SDL_SetWindowPosition(App->window->window, posX, posY);
-                    Resize(0);
-                    //resizeActive = true;
                 }
-
+                Resize(0);
+                resizeActive = true;
             }
 
             if (fullscreen && (modifywidth != width || modifyheight != height))
@@ -220,8 +215,6 @@ update_status ModuleEditor::Update(float dt)
                     SDL_SetWindowSize(App->window->window, DM.w, DM.h - 71);
                     glViewport(0, 0, DM.w, DM.h);
                     SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN);
-                    Resize(0);
-                    //resizeActive = true;
                     borderless = false;
                     resizable = false;
                     fullscreen = false;
@@ -231,11 +224,10 @@ update_status ModuleEditor::Update(float dt)
                     SDL_SetWindowFullscreen(App->window->window, 0);
                     SDL_SetWindowSize(App->window->window, width, height);
                     SDL_SetWindowPosition(App->window->window, posX, posY);
-                    Resize(0);
-                    //resizeActive = true;
                     borderless = true;
                     resizable = true;
                 }
+                Resize(0);
                 SDL_SetWindowBordered(App->window->window, SDL_bool(borderless));
             }
 
@@ -277,10 +269,10 @@ update_status ModuleEditor::Update(float dt)
             ImGui::TreePop();
         }
 
-        if (ImGui::GetWindowPos().x - posWindowX < 0 ||
-            ImGui::GetWindowPos().y - posWindowY < 0 ||
-            ImGui::GetWindowPos().x - posWindowX + ImGui::GetWindowSize().x > actualwidth ||
-            ImGui::GetWindowPos().y - posWindowY + ImGui::GetWindowSize().y > actualheight)
+        if (ImGui::GetWindowPos().x < 0 ||
+            ImGui::GetWindowPos().y < 0 ||
+            ImGui::GetWindowPos().x + ImGui::GetWindowSize().x > actualwidth ||
+            ImGui::GetWindowPos().y + ImGui::GetWindowSize().y > actualheight)
         {
             Resize(0);
         }
@@ -297,11 +289,11 @@ update_status ModuleEditor::Update(float dt)
         if (scrollC) ImGui::SetScrollHereY(1);
         scrollC = false;
 
-        if (ImGui::GetWindowPos().x - posWindowX < 0 ||
-            ImGui::GetWindowPos().y - posWindowY < 0 ||
-            ImGui::GetWindowPos().x - posWindowX + ImGui::GetWindowSize().x > actualwidth ||
-            ImGui::GetWindowPos().y - posWindowY + ImGui::GetWindowSize().y > actualheight) 
-            //resizeActive)
+        if (ImGui::GetWindowPos().x < 0 ||
+            ImGui::GetWindowPos().y < 0 ||
+            ImGui::GetWindowPos().x + ImGui::GetWindowSize().x > actualwidth ||
+            ImGui::GetWindowPos().y + ImGui::GetWindowSize().y > actualheight || 
+            resizeActive || fulldesktop)
         {
             Resize(1);
         }
@@ -386,23 +378,28 @@ void ModuleEditor::Resize(int num)
         if (fullscreen) ImGui::SetWindowSize({ float(DM.w / 4),  float(DM.h / 1.5f) });
         else if (fulldesktop) ImGui::SetWindowSize({ float(DM.w / 4),  float(DM.h / 1.25f) });
         else ImGui::SetWindowSize({ float(width / 4),  float(height / 1.41f) });
-        ImGui::SetWindowPos({ float(posWindowX), float(posWindowY) + 19 });
+        ImGui::SetWindowPos({ 0, 19 });
     }
 
     if (num == 1)
     {
         if (fullscreen)
         {
-            ImGui::SetWindowSize({ float(DM.w),  float((DM.h - 120) / 3.75f) });
-            ImGui::SetWindowPos({ float(posWindowX), float(posWindowY) + 19 + float(DM.h / 1.5f) });
+            ImGui::SetWindowSize({ float(DM.w),  float((DM.h - 80) / 3.75f) });
+            ImGui::SetWindowPos({ 0, 19 + float(DM.h / 1.5f) });
+        }
+        else if (fulldesktop)
+        {
+            ImGui::SetWindowSize({ float(DM.w),  float((DM.h - 340) / 3.75f) });
+            ImGui::SetWindowPos({ 0, 19 + float(DM.h / 1.25f) });
         }
         else
         {
             ImGui::SetWindowSize({ float(width),  float(height / 3.75f) });
-            ImGui::SetWindowPos({ float(posWindowX), float(posWindowY) + 48 + float(height / 1.5f) });
+            ImGui::SetWindowPos({ 0, 48 + float(height / 1.5f) });
         }
 
-        //resizeActive = false;
+        resizeActive = false;
     }
 }
 

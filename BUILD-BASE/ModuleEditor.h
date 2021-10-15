@@ -42,7 +42,6 @@ public:
 	float bright;
 	int width;
 	int height;
-	int posWindowX, posWindowY;
 	int posX, posY;
 	SDL_DisplayMode DM;
 
@@ -50,7 +49,7 @@ public:
 	bool resizable = true;
 	bool borderless = true;
 	bool fulldesktop = false;
-	//bool resizeActive = false;
+	bool resizeActive = false;
 
 	// Framerate config
 	std::vector<float> fps_log;
