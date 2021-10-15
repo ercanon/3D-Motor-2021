@@ -75,6 +75,11 @@ bool Application::Init()
 void Application::PrepareUpdate()
 {
 	dt = (float)ms_timer.Read() / 1000.0f;
+
+	Uint32 last_frame_ms = ms_timer.Read();
+	float wait = (1000.f / (float)maxFPS) - (float)last_frame_ms;
+	SDL_Delay(static_cast<Uint32>(fabs(wait)));
+
 	ms_timer.Start();
 }
 

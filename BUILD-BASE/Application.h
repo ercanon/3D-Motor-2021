@@ -23,6 +23,9 @@ public:
 	ModuleCamera3D* camera;
 	ModuleEditor* editor;
 
+	// Framerate Config
+	float maxFPS;
+
 private:
 
 	Timer	ms_timer;

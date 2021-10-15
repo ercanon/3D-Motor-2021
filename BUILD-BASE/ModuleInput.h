@@ -58,7 +58,9 @@ public:
 		return mouse_y_motion;
 	}
 
-private:
+	void LogInput(uint key, uint state);
+
+public:
 	KEY_STATE* keyboard;
 	KEY_STATE mouse_buttons[MAX_MOUSE_BUTTONS];
 	int mouse_x;
