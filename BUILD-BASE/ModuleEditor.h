@@ -5,8 +5,8 @@
 #include "imgui.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl.h"
-#include "SDL/include/SDL.h"
-#include "SDL/include/SDL_opengl.h"
+#include "SDL.h"
+#include "SDL_opengl.h"
 #include <vector>
 
 using namespace std;
