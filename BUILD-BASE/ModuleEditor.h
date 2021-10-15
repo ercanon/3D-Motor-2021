@@ -11,6 +11,8 @@
 
 using namespace std;
 
+#define LOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__);
+
 class ModuleEditor : public Module
 {
 public:
@@ -23,8 +25,8 @@ public:
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
 	void Resize(int num);
-	void LogToConsole();
 	bool CleanUp();
+	void log(const char file[], int line, const char* format, ...);
 
 public: 
 

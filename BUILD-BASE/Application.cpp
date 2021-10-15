@@ -57,7 +57,7 @@ bool Application::Init()
 	}
 
 	// After all Init calls we call Start() in all modules
-	LOG("Application Start --------------");
+	editor->LOG("Application Start --------------");
 	iterator = list_modules.begin();
 
 	while(iterator != list_modules.end() && ret == true)

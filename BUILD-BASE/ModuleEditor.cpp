@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "ModuleEditor.h"
+#include "Globals.h"
 
 ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -111,7 +112,6 @@ update_status ModuleEditor::PreUpdate(float dt)
 update_status ModuleEditor::Update(float dt)
 {
     SDL_GetWindowSize(App->window->window, &actualwidth, &actualheight);
-    LogToConsole();
 
     // Menu Window
     {
@@ -244,6 +244,48 @@ update_status ModuleEditor::Update(float dt)
             else ImGui::Text("VSync");
             ImGui::SliderFloat("Max FPS", &App->maxFPS, 0, 120);
 
+            ImGui::Text("Environment render Options");
+            if (ImGui::Checkbox("Depth Test", &depthTest))
+            {
+                if (depthTest) glEnable(GL_DEPTH_TEST);
+                else glDisable(GL_DEPTH_TEST);
+            }
+            ImGui::SameLine();
+            if (ImGui::Checkbox("Lighting", &lighting))
+            {
+                if (lighting) glEnable(GL_LIGHTING);
+                else glDisable(GL_LIGHTING);
+            }
+            if (ImGui::Checkbox("Fog", &fog))
+            {
+                if (fog) glEnable(GL_FOG);
+                else glDisable(GL_FOG);
+            }
+            
+            ImGui::Text("Geometry render Options");
+            if (ImGui::Checkbox("Wireframe", &wireframe))
+            {
+                if (wireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+                else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            }
+            ImGui::SameLine();
+            if (ImGui::Checkbox("Color Material", &colorMaterial))
+            {
+                if (colorMaterial) glEnable(GL_COLOR_MATERIAL);
+                else glDisable(GL_COLOR_MATERIAL);
+            }
+            if (ImGui::Checkbox("Texture 2D", &texture))
+            {
+                if (texture) glEnable(GL_TEXTURE_2D);
+                else glDisable(GL_TEXTURE_2D);
+            }
+            ImGui::SameLine();
+            if (ImGui::Checkbox("Cull Face", &cullFace))
+            {
+                if (cullFace) glEnable(GL_CULL_FACE);
+                else glDisable(GL_CULL_FACE);
+            }
+            
             ImGui::Text("FPS");
             char title[25];
             sprintf_s(title, 25, "Framerate %.1f", fps_log[fps_log.size() - 1]);
@@ -272,41 +314,7 @@ update_status ModuleEditor::Update(float dt)
 
         if (ImGui::TreeNode("Render Options"))
         {
-            if (ImGui::Checkbox("Depth Test", &depthTest))
-            {
-                if (depthTest) glEnable(GL_DEPTH_TEST);
-                else glDisable(GL_DEPTH_TEST);
-            }
-            if (ImGui::Checkbox("Cull Face", &cullFace))
-            {
-                if (cullFace) glEnable(GL_CULL_FACE);
-                else glDisable(GL_CULL_FACE);
-            }
-            if (ImGui::Checkbox("Lighting", &lighting))
-            {
-                if (lighting) glEnable(GL_LIGHTING);
-                else glDisable(GL_LIGHTING);
-            }
-            if (ImGui::Checkbox("Color Material", &colorMaterial))
-            {
-                if (colorMaterial) glEnable(GL_COLOR_MATERIAL);
-                else glDisable(GL_COLOR_MATERIAL);
-            }
-            if (ImGui::Checkbox("Texture 2D", &texture))
-            {
-                if (texture) glEnable(GL_TEXTURE_2D);
-                else glDisable(GL_TEXTURE_2D);
-            }
-            if (ImGui::Checkbox("Wireframe", &wireframe))
-            {
-                if (wireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-                else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-            }
-            if (ImGui::Checkbox("Fog", &fog))
-            {
-                if (fog) glEnable(GL_FOG);
-                else glDisable(GL_FOG);
-            }
+            
 
             ImGui::TreePop();
         }
@@ -326,7 +334,6 @@ update_status ModuleEditor::Update(float dt)
     if (consoleB)
     {
         ImGui::Begin("Console", &consoleB);
-
         ImGui::TextUnformatted(buffer.begin());
         if (scrollC) ImGui::SetScrollHereY(1);
         scrollC = false;
@@ -445,15 +452,6 @@ void ModuleEditor::Resize(int num)
     }
 }
 
-void ModuleEditor::LogToConsole()
-{
-    /*va_list args;
-    va_start(args, fmt);
-    buffer.appendv(fmt, args);    
-    va_end(args);
-    scrollC = true;*/
-}
-
 bool ModuleEditor::CleanUp()
 {
 	bool ret = true;
@@ -466,8 +464,25 @@ bool ModuleEditor::CleanUp()
     fps_log.clear();
     ms_log.clear();
     buffer.clear();
+    input.clear();
 
     SDL_GL_DeleteContext(gl_context);
 
 	return ret;
+}
+
+void ModuleEditor::log(const char file[], int line, const char* format, ...)
+{
+    static char tmp_string[4096];
+    static char tmp_string2[4096];
+    static va_list  ap;
+
+    // Construct the string from variable arguments
+    va_start(ap, format);
+    vsprintf_s(tmp_string, 4096, format, ap);
+    va_end(ap);
+    sprintf_s(tmp_string2, 4096, "\n%s(%d) : %s", file, line, tmp_string);
+    buffer.appendf(tmp_string2);
+    scrollC = true;
+    OutputDebugString(tmp_string2);
 }
