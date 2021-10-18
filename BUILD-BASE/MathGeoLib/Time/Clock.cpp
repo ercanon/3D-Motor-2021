@@ -16,7 +16,6 @@
 	@brief */
 
 #if defined(__unix__) || defined(__EMSCRIPTEN__) || defined(ANDROID) || defined(__APPLE__) || defined (__CYGWIN__)
-#include <time.h>
 #include <errno.h>
 #include <string.h>
 #include <sys/time.h>
@@ -37,6 +36,7 @@
 #include "Clock.h"
 #include "../Math/myassert.h"
 #include "../Math/assume.h"
+#include <time.h>
 
 MATH_BEGIN_NAMESPACE
 
