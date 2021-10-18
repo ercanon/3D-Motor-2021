@@ -312,13 +312,6 @@ update_status ModuleEditor::Update(float dt)
             ImGui::TreePop();
         }
 
-        if (ImGui::TreeNode("Render Options"))
-        {
-            
-
-            ImGui::TreePop();
-        }
-
         if (ImGui::GetWindowPos().x < 0 ||
             ImGui::GetWindowPos().y < 0 ||
             ImGui::GetWindowPos().x + ImGui::GetWindowSize().x > actualwidth ||
@@ -401,8 +394,6 @@ update_status ModuleEditor::PostUpdate(float dt)
     ImGui::Render();
     glViewport(0, 0, (int)io_copy.DisplaySize.x, (int)io_copy.DisplaySize.y);
     glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
-    //glClear(GL_COLOR_BUFFER_BIT);
-    //glUseProgram(0); // You may want this if using this code in an OpenGL 3+ context where shaders may be bound
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
     // Update and Render additional Platform Windows
