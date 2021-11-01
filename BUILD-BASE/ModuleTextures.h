@@ -12,6 +12,8 @@
 class Material
 {
 public:
+	std::string name;
+
 	GLuint textureID = -1;
 	GLuint buff_texture;
 

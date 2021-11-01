@@ -393,8 +393,7 @@ update_status ModuleEditor::Update(float dt)
                 figNum = i;
                 displayinfo = true;
             }
-        }
-        
+        }     
         
         if (ImGui::GetWindowPos().x < 0 ||
             ImGui::GetWindowPos().y < 0 ||
@@ -443,14 +442,23 @@ update_status ModuleEditor::Update(float dt)
             {
                 if (ImGui::TreeNode("Texture"))
                 {
-                    if (ImGui::Checkbox("UV Checker", &App->primitive->listFigures.At(figNum)->data.currentMaterial.checker))
-                    {
-                        if (App->primitive->listFigures.At(figNum)->data.currentMaterial.checker);
-                        else ;
-                    }
                     ImGui::Text("Texture width: %i", App->primitive->listFigures.At(figNum)->data.currentMaterial.texWidth);
                     ImGui::Text("Texture height: %i", App->primitive->listFigures.At(figNum)->data.currentMaterial.texHeight);
                     ImGui::Image((ImTextureID)App->primitive->listFigures.At(figNum)->data.currentMaterial.textureID, ImVec2(128, 128));
+
+                    ImGui::Text("List Textures");
+                    for (int i = 0; i < App->texture->listMaterials.Count(); i++)
+                    {
+                        const char* c = App->texture->listMaterials.At(i)->data.name.c_str();
+                        if (ImGui::TreeNodeEx(c, 256))
+                        {
+                            ImGui::TreePop();
+                        }
+                        if (ImGui::IsItemClicked())
+                        {
+                            App->primitive->listFigures.At(figNum)->data.currentMaterial = App->texture->listMaterials.At(i)->data;
+                        }
+                    }
 
                     ImGui::TreePop();
                 }

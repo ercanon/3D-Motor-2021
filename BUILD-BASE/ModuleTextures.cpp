@@ -79,7 +79,7 @@ void ModuleTextures::LoadTextureBase()
 	material.texWidth = 64;
 	material.texHeight = 64;
 	material.checker = true;
-	material.textureID = GLint(checkerImage);
+	material.name = "Checkers";
 
 	listMaterials.Add(material);
 }
@@ -107,11 +107,12 @@ void ModuleTextures::LoadTextures(const char* file_path)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), 0, GL_RGBA, GL_UNSIGNED_BYTE, ilGetData());
-		
 		material.texWidth = ilGetInteger(IL_IMAGE_WIDTH);
 		material.texHeight = ilGetInteger(IL_IMAGE_HEIGHT);
 		material.checker = false;
+		material.name = "Imported Material";
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, material.texWidth, material.texHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, ilGetData());
 
 		material.textureID = ilutGLBindTexImage();
 

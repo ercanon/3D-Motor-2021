@@ -55,10 +55,10 @@ bool ModulePrimitives::CleanUp()
 
 void ModulePrimitives::CreateBuffer(Shape shape)
 {
-	GameObject figure;
-
-	if(App->texture->listMaterials.At(0) == NULL)
+	if (App->texture->listMaterials.At(0) == NULL)
 		App->texture->LoadTextureBase();
+
+	GameObject figure;
 
 	switch (shape)
 	{
