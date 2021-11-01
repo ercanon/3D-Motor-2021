@@ -1,4 +1,3 @@
-#include "Globals.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include <gl/GL.h>
@@ -142,7 +141,6 @@ update_status ModuleRenderer3D::Update(float dt)
 {
 	if (App->editor->wireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	DrawQuad();
 
 	return UPDATE_CONTINUE;
 }
@@ -176,51 +174,4 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-}
-
-void ModuleRenderer3D::DrawQuad()
-{
-	uint my_id = 0;
-	glGenBuffers(1, (GLuint*)&(my_id));
-
-	uint my_indices = 0;
-	glGenBuffers(1, (GLuint*)&(my_indices));
-
-	GLfloat vertices[] = {	-0.5f, -0.5f, -0.5f,	// 8 of vertex coords
-							-0.5f, -0.5f, 0.5f,
-							0.5f, -0.5f, -0.5f,
-							0.5f, -0.5f, 0.5f,
-
-							-0.5f, 0.5f, -0.5f,
-							-0.5f, 0.5f, 0.5f,
-							0.5f, 0.5f, -0.5f,
-							0.5f, 0.5f, 0.5f };
-
-	GLubyte indices[] = {	0,2,1, 2,3,1,   // 36 of indices
-							0,4,2, 4,6,2, 
-							0,1,4, 4,1,5, 
-							7,3,6, 6,3,2,
-							7,6,5, 6,4,5,
-							7,5,3, 5,1,3 };
-
-	
-	glEnableClientState(GL_VERTEX_ARRAY);
-
-	glVertexPointer(3, GL_FLOAT, 0, vertices);
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, indices);
-
-	glDisableClientState(GL_VERTEX_ARRAY);
-
-	/*glEnableClientState(GL_VERTEX_ARRAY);
-
-	glBindBuffer(GL_ARRAY_BUFFER, my_id);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, NULL);
-
-	glDisableClientState(GL_VERTEX_ARRAY);
-
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 8 * 3, vertices, GL_STATIC_DRAW);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * 36, indices, GL_STATIC_DRAW); Limpieza no funcional*/
 }

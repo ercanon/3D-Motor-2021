@@ -9,7 +9,9 @@ enum KEY_STATE
 	KEY_IDLE = 0,
 	KEY_DOWN,
 	KEY_REPEAT,
-	KEY_UP
+	KEY_UP,
+	SCROLL_UP,
+	SCROLL_DOWN
 };
 
 class ModuleInput : public Module
@@ -43,9 +45,9 @@ public:
 		return mouse_y;
 	}
 
-	int GetMouseZ() const
+	int GetWheel() const
 	{
-		return mouse_z;
+		return wheel_mov;
 	}
 
 	int GetMouseXMotion() const
@@ -58,6 +60,7 @@ public:
 		return mouse_y_motion;
 	}
 
+
 	void LogInput(uint key, uint state);
 
 public:
@@ -65,7 +68,7 @@ public:
 	KEY_STATE mouse_buttons[MAX_MOUSE_BUTTONS];
 	int mouse_x;
 	int mouse_y;
-	int mouse_z;
+	int wheel_mov;
 	int mouse_x_motion;
 	int mouse_y_motion;
 	//int mouse_z_motion;

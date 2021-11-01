@@ -2,20 +2,29 @@
 #define __ModuleFBX_H__
 
 #include "Module.h"
+#include "Globals.h"
+#include "Tools/List.h"
+#include "glew.h"
+#include "SDL_opengl.h"
 
-class ModuleFBX : public Module
+#include "assimp/cimport.h"
+#include "assimp/scene.h"
+#include "assimp/postprocess.h"
+#include <assimp/Importer.hpp> 
+
+class ModuleFBX: public Module
 {
 public:
-	ModuleFBX(Application* app, bool start_enabled = true);
-	~ModuleFBX();
+    ModuleFBX(Application* app, bool start_enabled = true);
 
-	bool Init();
-	update_status PreUpdate(float dt);
-	update_status Update(float dt);
-	update_status PostUpdate(float dt);
-	bool CleanUp();
+    ~ModuleFBX();
 
+    bool Init();
+    bool CleanUp();
+    
+    void LoadFbx(const char* file_path);
+
+private:
+    void InitFbx(const aiMesh* paiFbx, GameObject figure);
 };
-
 #endif
-

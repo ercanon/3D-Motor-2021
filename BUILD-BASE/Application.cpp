@@ -7,6 +7,9 @@ Application::Application()
 	renderer3D = new ModuleRenderer3D(this);
 	camera = new ModuleCamera3D(this);
 	editor = new ModuleEditor(this);
+	primitive = new ModulePrimitives(this);
+	texture = new ModuleTextures(this);
+	fbx = new ModuleFBX(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -19,6 +22,11 @@ Application::Application()
 
 	// ImGui - Editor
 	AddModule(editor);
+
+	// Primitives
+	AddModule(primitive);
+	AddModule(fbx);
+	AddModule(texture);
 
 	// Renderer last!
 	AddModule(renderer3D);
@@ -68,6 +76,38 @@ bool Application::Init()
 	}
 	
 	ms_timer.Start();
+
+	SDL_GetVersion(&SDLversion);
+	cpuCountStart = SDL_GetCPUCount();
+	cpuCacheSizeStart = SDL_GetCPUCacheLineSize();
+	ramStart = SDL_GetSystemRAM() / 1024;
+	
+	if (SDL_HasAVX())
+		capsStart += "AVX, ";
+	if (SDL_HasAVX2())
+		capsStart += "AVX2, ";
+	if (SDL_HasMMX())
+		capsStart += "MMX, ";
+	if (SDL_HasRDTSC())
+		capsStart += "RDTSC, ";
+	if (SDL_HasSSE())
+		capsStart += "SSE, ";
+	if (SDL_HasSSE2())
+		capsStart += "SSE2, ";
+	if (SDL_HasSSE3())
+		capsStart += "SSE3, ";
+	if (SDL_HasSSE41())
+		capsStart += "SSE41, ";
+	if (SDL_HasSSE42())
+		capsStart += "SSE42, ";
+
+	// Erase last ", "
+	int l = capsStart.size();
+	capsStart.erase(l - 2, l - 1);
+
+	gpuIntegratedModelStart = (const char*)glGetString(GL_RENDERER);
+	gpuIntegratedVendorStart = (const char*)glGetString(GL_VENDOR);
+
 	return ret;
 }
 

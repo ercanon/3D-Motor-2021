@@ -1,4 +1,3 @@
-#include "Globals.h"
 #include "Application.h"
 #include "ModuleInput.h"
 
@@ -70,7 +69,7 @@ update_status ModuleInput::PreUpdate(float dt)
 
 	mouse_x /= SCREEN_SIZE;
 	mouse_y /= SCREEN_SIZE;
-	mouse_z = 0;
+	wheel_mov = 0;
 
 	for(int i = 0; i < 5; ++i)
 	{
@@ -99,6 +98,8 @@ update_status ModuleInput::PreUpdate(float dt)
 
 	mouse_x_motion = mouse_y_motion = 0;
 
+	// Pointer for directory of dropped file
+	char* dropped_filedir;
 	bool quit = false;
 	SDL_Event e;
 	while(SDL_PollEvent(&e))
@@ -107,7 +108,7 @@ update_status ModuleInput::PreUpdate(float dt)
 		switch(e.type)
 		{
 			case SDL_MOUSEWHEEL:
-			mouse_z = e.wheel.y;
+			wheel_mov = e.wheel.y;
 			break;
 
 			case SDL_MOUSEMOTION:
@@ -126,6 +127,22 @@ update_status ModuleInput::PreUpdate(float dt)
 			{
 				if(e.window.event == SDL_WINDOWEVENT_RESIZED)
 					App->renderer3D->OnResize(e.window.data1, e.window.data2);
+				break;
+			}
+
+			case SDL_DROPFILE: 
+			{
+				dropped_filedir = e.drop.file;
+				SDL_ShowSimpleMessageBox(
+					SDL_MESSAGEBOX_INFORMATION,
+					"File dropped on window",
+					dropped_filedir,
+					App->window->window
+				);
+				App->fbx->LoadFbx(dropped_filedir);
+				App->texture->LoadTextures(dropped_filedir);
+				SDL_free(dropped_filedir);    // Free dropped_filedir memory
+				break;
 			}
 		}
 	}

@@ -1,6 +1,5 @@
 #include "Application.h"
 #include "ModuleEditor.h"
-#include "Globals.h"
 
 ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -76,6 +75,10 @@ bool ModuleEditor::Init()
     width = SCREEN_WIDTH;
     height = SCREEN_HEIGHT;
 
+    resizeActive = true;
+    resizeActive2 = true;
+    resizeActive3 = true;
+
 	return ret;
 }
 
@@ -117,15 +120,30 @@ update_status ModuleEditor::Update(float dt)
     {
         if (ImGui::BeginMainMenuBar())
         {
-            if (ImGui::BeginMenu("Menu"))
+            if (ImGui::BeginMenu("Windows"))
             {
-                if (ImGui::MenuItem("Configuration")) configB = !configB;
+                if (ImGui::MenuItem("Inspector")) propertiesB = !propertiesB;
+                if (ImGui::MenuItem("Hierarchy")) hierarchyB = !hierarchyB;
                 if (ImGui::MenuItem("Console")) consoleB = !consoleB;
+                if (ImGui::MenuItem("Configuration")) configB = !configB;
                 if (ImGui::MenuItem("About")) aboutB = !aboutB;
+                
+                ImGui::EndMenu();
+            }
+            if (ImGui::BeginMenu("Create"))
+            {
+                if (ImGui::MenuItem("Cube")) App->primitive->CreateBuffer(CUBE);
+                else if (ImGui::MenuItem("Pyramid")) App->primitive->CreateBuffer(PYRAMID);
+
+                ImGui::EndMenu();
+            }
+            if (ImGui::BeginMenu("Quit"))
+            {
+                return UPDATE_STOP;
+
                 ImGui::EndMenu();
             }
         }
-
         ImGui::EndMainMenuBar();
     }
 
@@ -151,17 +169,28 @@ update_status ModuleEditor::Update(float dt)
             if (resizable)
             {
                 ImGui::Text("Size");
-                if (ImGui::SliderInt("Width", &width, 640, SCREEN_WIDTH)) SDL_SetWindowSize(App->window->window, width, height);
-                if (ImGui::SliderInt("Height", &height, 480, SCREEN_HEIGHT)) SDL_SetWindowSize(App->window->window, width, height);
+                if (ImGui::SliderInt("Width", &width, 640, SCREEN_WIDTH))
+                {
+                    SDL_SetWindowSize(App->window->window, width, height);
+                    rechangeR = true;
+                }
+                if (ImGui::SliderInt("Height", &height, 480, SCREEN_HEIGHT))
+                {
+                    SDL_SetWindowSize(App->window->window, width, height);
+                    rechangeR = true;
+                }
               
                 SDL_GetWindowSize(App->window->window, &modifywidth, &modifyheight);
                 if (modifywidth != width || modifyheight != height) SDL_SetWindowSize(App->window->window, width, height);
 
-                if (!fullscreen)
+                if (rechangeR)
                 {
                     glViewport(0, 0, width, height);
                     Resize(0);
                     resizeActive = true;
+                    resizeActive2 = true;
+                    resizeActive3 = true;
+                    rechangeR = false;
                 }
             }
 
@@ -190,9 +219,12 @@ update_status ModuleEditor::Update(float dt)
                     resizable = true;
                     SDL_SetWindowSize(App->window->window, width, height);
                     SDL_SetWindowPosition(App->window->window, posX, posY);
+                    glViewport(0, 0, width, height);
                 }
                 Resize(0);
                 resizeActive = true;
+                resizeActive2 = true;
+                resizeActive3 = true;
             }
 
             if (fullscreen && (modifywidth != width || modifyheight != height))
@@ -225,8 +257,12 @@ update_status ModuleEditor::Update(float dt)
                     SDL_SetWindowFullscreen(App->window->window, 0);
                     SDL_SetWindowSize(App->window->window, width, height);
                     SDL_SetWindowPosition(App->window->window, posX, posY);
+                    glViewport(0, 0, width, height);
                     borderless = true;
                     resizable = true;
+                    resizeActive = true;
+                    resizeActive2 = true;
+                    resizeActive3 = true;
                 }
                 Resize(0);
                 SDL_SetWindowBordered(App->window->window, SDL_bool(borderless));
@@ -263,11 +299,7 @@ update_status ModuleEditor::Update(float dt)
             }
             
             ImGui::Text("Geometry render Options");
-            if (ImGui::Checkbox("Wireframe", &wireframe))
-            {
-                if (wireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-                else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-            }
+            ImGui::Checkbox("Wireframe", &wireframe);
             ImGui::SameLine();
             if (ImGui::Checkbox("Color Material", &colorMaterial))
             {
@@ -301,7 +333,7 @@ update_status ModuleEditor::Update(float dt)
         {
             ImGui::Text("Mouse Position: %i, %i", App->input->mouse_x, App->input->mouse_y);
             ImGui::Text("Mouse Movement: %i, %i", App->input->mouse_x_motion, App->input->mouse_y_motion);
-            ImGui::Text("Mouse Wheel: %i", App->input->mouse_z);
+            ImGui::Text("Mouse Wheel: %i", App->input->wheel_mov);
 
             ImGui::BeginChild("Input Log");
             ImGui::TextUnformatted(input.begin());
@@ -312,12 +344,133 @@ update_status ModuleEditor::Update(float dt)
             ImGui::TreePop();
         }
 
+        if (ImGui::TreeNode("Software & Hardware"))
+        {
+            if (ImGui::TreeNode("Software"))
+            {
+                ImGui::Text("SDL Version: %d.%d.%d", App->SDLversion.major, App->SDLversion.minor, App->SDLversion.patch);
+                ImGui::Text("OpenGL Version: %s", glGetString(GL_VERSION));
+                ImGui::Text("Devil Version: %d", IL_VERSION);
+                ImGui::TreePop();
+            }
+            if (ImGui::TreeNode("Hardware"))
+            {
+                ImGui::Text("CPUs: %d (Cache: %dkb)", App->cpuCountStart, App->cpuCacheSizeStart);
+                ImGui::Text("System RAM: %.1f Gb", App->ramStart);
+                ImGui::Text("Caps: %s", App->capsStart.c_str());
+                ImGui::Text("GPU: %s", App->gpuIntegratedModelStart.c_str());
+                ImGui::Text("Vendor: %s", App->gpuIntegratedVendorStart.c_str());
+                ImGui::TreePop();
+            }
+            ImGui::TreePop();
+        }
+
         if (ImGui::GetWindowPos().x < 0 ||
             ImGui::GetWindowPos().y < 0 ||
             ImGui::GetWindowPos().x + ImGui::GetWindowSize().x > actualwidth ||
             ImGui::GetWindowPos().y + ImGui::GetWindowSize().y > actualheight)
         {
             Resize(0);
+        }
+
+        ImGui::End();
+    }
+
+    // Hierarchy Window
+    if (hierarchyB)
+    {
+        ImGui::Begin("Hierarchy", &hierarchyB);
+        
+        for (int i = 0; i < App->primitive->listFigures.Count(); i++) 
+        {
+            if (App->primitive->listFigures.At(i)->data.shape == CUBE)
+            {
+                const char* c = App->primitive->listFigures.At(i)->data.name.c_str();
+                if (ImGui::TreeNodeEx(c, 256))
+                {
+                    ImGui::TreePop();
+                }
+            }
+            if (App->primitive->listFigures.At(i)->data.shape == PYRAMID)
+            {
+                const char* c = App->primitive->listFigures.At(i)->data.name.c_str();
+                if (ImGui::TreeNodeEx(c, 256))
+                {
+                    ImGui::TreePop();
+                }
+            }
+            if (ImGui::IsItemClicked())
+            {
+                figNum = i;
+                displayinfo = true;
+            }
+        }
+
+        
+        
+        if (ImGui::GetWindowPos().x < 0 ||
+            ImGui::GetWindowPos().y < 0 ||
+            ImGui::GetWindowPos().x + ImGui::GetWindowSize().x > actualwidth ||
+            ImGui::GetWindowPos().y + ImGui::GetWindowSize().y > actualheight ||
+            fulldesktop || resizeActive3)
+        {
+            Resize(3);
+        }
+
+        ImGui::End();
+    }
+
+    // Properties Window
+    if (propertiesB)
+    {
+        ImGui::Begin("Inspector", &propertiesB);
+
+        if (displayinfo)
+        {
+            if (ImGui::TreeNode("Transform"))
+            {
+                vec3 dummy;
+                ImGui::AlignTextToFramePadding();
+                ImGui::Text("Position"); ImGui::NextColumn();
+                ImGui::DragFloat3("##P", &App->primitive->listFigures.At(figNum)->data.position[0], .1f);
+                ImGui::Text("Rotation"); ImGui::NextColumn();
+                ImGui::DragFloat3("##R", &App->primitive->listFigures.At(figNum)->data.eulerRot[0], .1f);
+                ImGui::Text("Scale"); ImGui::NextColumn();
+                ImGui::DragFloat3("##S", &App->primitive->listFigures.At(figNum)->data.scale[0], .1f);
+
+                ImGui::TreePop();
+            }
+
+            if (ImGui::TreeNode("Mesh"))
+            {
+                ImGui::Text("Shape: %s", App->primitive->listFigures.At(figNum)->data.shapename.c_str());
+                ImGui::Text("Vertices: %i", App->primitive->listFigures.At(figNum)->data.num_vertices);
+                ImGui::Text("Indices: %i", App->primitive->listFigures.At(figNum)->data.num_indices);
+                
+                ImGui::TreePop();
+            }
+
+            if (App->primitive->listFigures.At(figNum)->data.currentMaterial.texWidth > 0
+                && App->primitive->listFigures.At(figNum)->data.currentMaterial.texHeight > 0)
+            {
+                if (ImGui::TreeNode("Texture"))
+                {
+                    ImGui::Text("Texture width: %i", App->primitive->listFigures.At(figNum)->data.currentMaterial.texWidth);
+                    ImGui::Text("Texture height: %i", App->primitive->listFigures.At(figNum)->data.currentMaterial.texHeight);
+                    ImGui::Image((ImTextureID)App->primitive->listFigures.At(figNum)->data.currentMaterial.textureID, ImVec2(128, 128));
+
+                    ImGui::TreePop();
+                }
+            }
+        }
+
+        if (ImGui::GetWindowPos().x < 0 ||
+            ImGui::GetWindowPos().y < 0 ||
+            ImGui::GetWindowPos().x + ImGui::GetWindowSize().x > actualwidth ||
+            ImGui::GetWindowPos().y + ImGui::GetWindowSize().y > actualheight ||
+            resizeActive2 || fulldesktop)
+        {
+            Resize(2);
         }
 
         ImGui::End();
@@ -348,11 +501,12 @@ update_status ModuleEditor::Update(float dt)
     {
         ImGui::Begin("About", &aboutB);
 
-        ImGui::Text("JaggyJiggy v0.1");
+        ImGui::Text("JaggyJiggy v0.5: https://github.com/ercanon/3D-Motor-2021");
         ImGui::Text("3D Game Engine");
         ImGui::Text("Autor:");
         ImGui::BulletText("Alex Gesti: https://github.com/alexgesti");
         ImGui::BulletText("Raul Cano: https://github.com/ercanon");
+        ImGui::BulletText("Pau Motta: https://github.com/paumotta");
         ImGui::NewLine();
         ImGui::Text("3rd Party Libraries used:");
         ImGui::BulletText("SDL 2.0.16");
@@ -360,6 +514,9 @@ update_status ModuleEditor::Update(float dt)
         ImGui::BulletText("ImGui 1.84.2");
         ImGui::BulletText("MathGeoLib 1.5");
         ImGui::BulletText("OpenGL 3.1");
+        ImGui::BulletText("Assimp 5.0.1");
+        ImGui::BulletText("Devil 1.8.0");
+        ImGui::BulletText("Json");
         // Habrá que añadir más
         ImGui::NewLine();
         ImGui::Text("MIT License");
@@ -440,6 +597,36 @@ void ModuleEditor::Resize(int num)
         }
 
         resizeActive = false;
+    }
+
+    if (num == 2)
+    {
+        if (fullscreen)
+        {
+            ImGui::SetWindowSize({ float(DM.w / 4),  float(DM.h / 1.5f) });
+            ImGui::SetWindowPos({ DM.w - float(DM.w / 4), 19 });
+        }
+        else if (fulldesktop)
+        {
+            ImGui::SetWindowSize({ float(DM.w / 4),  float(DM.h / 1.25f) });
+            ImGui::SetWindowPos({ DM.w - float(DM.w / 4), 19 });
+        }
+        else
+        {
+            ImGui::SetWindowSize({ float(width / 4),  float(height / 1.41f) });
+            ImGui::SetWindowPos({ width - float(width / 4), 19 });
+        }
+
+        resizeActive2 = false;
+    }
+
+    if (num == 3)
+    {
+        if (fullscreen) ImGui::SetWindowSize({ float(DM.w / 4),  float(DM.h / 1.5f) });
+        else if (fulldesktop) ImGui::SetWindowSize({ float(DM.w / 4),  float(DM.h / 1.25f) });
+        else ImGui::SetWindowSize({ float(width / 4),  float(height / 1.41f) });
+        ImGui::SetWindowPos({ 0, 19 });
+        resizeActive3 = false;
     }
 }
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "Module.h"
-#include "glmath.h"
+#include "Globals.h"
+#include "Tools/glmath.h"
 #include "Light.h"
 #include "glew.h"
 #include "SDL_opengl.h"
@@ -21,10 +22,7 @@ public:
 
 	void OnResize(int width, int height);
 
-	void DrawQuad();
-
 public:
-
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 	mat3x3 NormalMatrix;

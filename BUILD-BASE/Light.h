@@ -1,7 +1,7 @@
 
 #pragma once
-#include "Color.h"
-#include "glmath.h"
+#include "Tools/Color.h"
+#include "Tools/glmath.h"
 
 struct Light
 {

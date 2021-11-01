@@ -1,4 +1,3 @@
-#include "Globals.h"
 #include "Application.h"
 #include "ModuleWindow.h"
 
@@ -67,6 +66,8 @@ bool ModuleWindow::Init()
 			//Get window surface
 			screen_surface = SDL_GetWindowSurface(window);
 		}
+
+		SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
 	}
 
 	return ret;

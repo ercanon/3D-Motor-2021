@@ -10,7 +10,10 @@
 #include "ModuleInput.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
+#include "ModulePrimitives.h"
 #include "ModuleEditor.h"
+#include "ModuleTextures.h"
+#include "ModuleFBX.h"
 
 using namespace std;
 
@@ -22,9 +25,21 @@ public:
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;
 	ModuleEditor* editor;
+	ModulePrimitives* primitive;
+	ModuleTextures* texture;
+	ModuleFBX* fbx;
 
 	// Framerate Config
 	float maxFPS;
+
+	// Hardware config
+	SDL_version SDLversion;
+	int cpuCountStart = 0;
+	int cpuCacheSizeStart = 0;
+	float ramStart = 0.0f;
+	std::string capsStart = "";
+	std::string gpuIntegratedModelStart = "";
+	std::string gpuIntegratedVendorStart = "";
 
 private:
 

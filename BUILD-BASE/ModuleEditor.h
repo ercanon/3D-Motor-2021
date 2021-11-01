@@ -2,6 +2,7 @@
 #define __ModuleEditor_H__
 
 #include "Module.h"
+#include "Globals.h"
 #include "imgui.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl.h"
@@ -36,7 +37,9 @@ public:
 	ImVec4 clear_color;
 
 	// Windows Editor
-	bool configB = true;
+	bool hierarchyB = true;
+	bool propertiesB = true;
+	bool configB = false;
 	bool consoleB = true;
 	bool aboutB = false;
 
@@ -49,9 +52,12 @@ public:
 
 	bool fullscreen = false;
 	bool resizable = true;
+	bool rechangeR = false;
 	bool borderless = true;
 	bool fulldesktop = false;
 	bool resizeActive = false;
+	bool resizeActive2 = false;
+	bool resizeActive3 = false;
 
 	bool depthTest = true;
 	bool cullFace = true;
@@ -61,6 +67,9 @@ public:
 	bool wireframe = false;
 	bool fog = false;
 
+	// Hierarchy config
+	int figNum = 0;
+	bool displayinfo = false;
 
 	// Framerate config
 	std::vector<float> fps_log;
@@ -75,7 +84,6 @@ public:
 	bool scrollC;
 
 private:
-
 	// Window config Helpers
 	int modifywidth, modifyheight;
 	int actualwidth, actualheight;
