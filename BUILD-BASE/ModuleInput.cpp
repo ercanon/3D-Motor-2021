@@ -139,11 +139,8 @@ update_status ModuleInput::PreUpdate(float dt)
 					dropped_filedir,
 					App->window->window
 				);
-				App->texture->LoadTextures(dropped_filedir);
 				App->fbx->LoadFbx(dropped_filedir);
-
-				//CheckFile(dropped_filedir);
-
+				App->texture->LoadTextures(dropped_filedir);
 				SDL_free(dropped_filedir);    // Free dropped_filedir memory
 				break;
 			}
@@ -175,43 +172,3 @@ void ModuleInput::LogInput(uint key, uint state)
 	App->editor->input.appendf(entry);
 	App->editor->scroll = true;
 }
-
-/*void ModuleInput::CheckFile(const char* filedir)
-{
-	FILE* fp;
-
-	// Open the file
-	fp = fopen(filedir, "rb");
-	if (fp != NULL)
-	{
-		// Verify the type of the file
-		char filecode[4];
-		fread(filecode, 1, 4, fp);
-
-		if (strncmp(filecode, "DDS ", 4) != 0)
-		{
-			fclose(fp);
-
-			//App->texture->LoadDDS(filedir);
-		}
-		else if ((strncmp(filecode, "JPG ", 4) != 0) || (strncmp(filecode, "PNG ", 4) != 0))
-		{
-			fclose(fp);
-
-			App->texture->LoadTextures(filedir);
-		}
-		else if ((strncmp(filecode, "FBX ", 4) != 0) || (strncmp(filecode, "3DS ", 4) != 0) || (strncmp(filecode, "DAE ", 4) != 0) || (strncmp(filecode, "OBJ ", 4) != 0))
-		{
-			fclose(fp);
-
-			App->fbx->LoadFbx(filedir);
-		}
-		else
-		{
-			fclose(fp);
-
-			App->editor->LOG("Error opening the file");
-		}
-	}
-	else App->editor->LOG("Error opening the file");
-}*/

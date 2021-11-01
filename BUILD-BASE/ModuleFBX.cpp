@@ -61,7 +61,7 @@ void ModuleFBX::LoadFbx(const char* file_path)
 
 void ModuleFBX::InitFbx(const aiMesh* aiMesh, GameObject figure)
 {
-    std::vector<float3> Vertices;
+    std::vector<float> Vertices;
     std::vector<int> Indices;
 
     //const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
@@ -69,8 +69,9 @@ void ModuleFBX::InitFbx(const aiMesh* aiMesh, GameObject figure)
     for (int i = 0; i < aiMesh->mNumVertices; i++) {
         //const aiVector3D* pTexCoord = aiMesh->HasTextureCoords(0) ? &(aiMesh->mTextureCoords[0][i]) : &Zero3D;
 
-        float3 vertx(aiMesh->mVertices[i].x, aiMesh->mVertices[i].y, aiMesh->mVertices[i].z);
-        Vertices.push_back(vertx);
+        Vertices.push_back(float(aiMesh->mVertices[i].x));
+        Vertices.push_back(float(aiMesh->mVertices[i].y));
+        Vertices.push_back(float(aiMesh->mVertices[i].z));
     }
 
     for (int i = 0; i < aiMesh->mNumFaces; i++) {
@@ -86,11 +87,11 @@ void ModuleFBX::InitFbx(const aiMesh* aiMesh, GameObject figure)
     figure.shape = FBX;
     //figure.num_uvs = aiMesh->mNumVertices;
 
-    glGenBuffers(1, &(figure.buff_vertices));
+    glGenBuffers(1, (GLuint*)&(figure.buff_vertices));
     glBindBuffer(GL_ARRAY_BUFFER, figure.buff_vertices);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float3) * figure.num_vertices, &Vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * figure.num_vertices * 3, &Vertices, GL_STATIC_DRAW);
 
-    glGenBuffers(1, &(figure.buff_indices));
+    glGenBuffers(1, (GLuint*)&(figure.buff_indices));
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, figure.buff_indices);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * figure.num_indices, &Indices, GL_STATIC_DRAW);
 

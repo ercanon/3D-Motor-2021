@@ -9,7 +9,9 @@ enum KEY_STATE
 	KEY_IDLE = 0,
 	KEY_DOWN,
 	KEY_REPEAT,
-	KEY_UP
+	KEY_UP,
+	SCROLL_UP,
+	SCROLL_DOWN
 };
 
 class ModuleInput : public Module
@@ -60,9 +62,6 @@ public:
 
 
 	void LogInput(uint key, uint state);
-
-private:
-	//void CheckFile(const char* filedir);
 
 public:
 	KEY_STATE* keyboard;
