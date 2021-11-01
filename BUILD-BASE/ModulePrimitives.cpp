@@ -76,9 +76,6 @@ void ModulePrimitives::CreateBuffer(Shape shape)
 		figure.shapename = "PYRAMID";
 		App->editor->LOG("----- Creating primitive %s -----", figure.name.c_str());
 		break;
-	case FBX:
-		shapeCounter[2]++;
-		break;
 	default:
 		App->editor->LOG("Error: Shape not foud!");
 		break;

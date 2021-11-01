@@ -25,6 +25,8 @@ void ModuleFBX::LoadFbx(const char* file_path)
         // Initialize the meshes in the scene one by one
         for (unsigned int i = 0; i < pscene->mNumMeshes; i++) {
             const aiMesh* paiMesh = pscene->mMeshes[i];
+            figure.name = pscene->mMeshes[i]->mName.C_Str();
+            App->editor->LOG("----- Creating primitive %s -----", figure.name.c_str());
             InitMesh(figure, paiMesh);
         }
     }
@@ -62,6 +64,9 @@ void ModuleFBX::InitMesh(GameObject figure, const aiMesh* paiMesh)
     glGenBuffers(1, &figure.buff_indices);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, figure.buff_indices);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * Indices.size(), &Indices[0], GL_STATIC_DRAW);
+
+    App->editor->LOG("----- Creating vertices (num: %d) -----", figure.num_vertices);
+    App->editor->LOG("----- Creating buffer figure... -----");
 
     App->primitive->listFigures.Add(figure);
 }
