@@ -133,20 +133,21 @@ GameObject ModulePrimitives::BufferQuad(GameObject figure)
 	figure.num_indices = 36;
 	figure.num_uvs = 8;
 	figure.shape = CUBE;
+	figure.active = true;
 
 	glGenBuffers(1, &figure.buff_vertices);
 	glBindBuffer(GL_ARRAY_BUFFER, figure.buff_vertices);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLuint) * figure.num_vertices * 3, vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * figure.num_vertices * 3, vertices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glGenBuffers(1, &figure.buff_indices);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, figure.buff_indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * figure.num_indices, indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * figure.num_indices, indices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	glGenBuffers(1, &figure.buff_uvs);
 	glBindBuffer(GL_ARRAY_BUFFER, figure.buff_uvs);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLuint) * figure.num_uvs * 2, uv, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * figure.num_uvs * 2, uv, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	App->editor->LOG("----- Creating vertices (num: %d) -----", figure.num_vertices);
@@ -193,20 +194,21 @@ GameObject ModulePrimitives::BufferPyramid(GameObject figure)
 	figure.num_indices = 18;
 	figure.num_uvs = 8;
 	figure.shape = PYRAMID;
+	figure.active = true;
 
 	glGenBuffers(1, &figure.buff_vertices);
 	glBindBuffer(GL_ARRAY_BUFFER, figure.buff_vertices);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLuint) * figure.num_vertices * 3, vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * figure.num_vertices * 3, vertices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glGenBuffers(1, &figure.buff_indices);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, figure.buff_indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * figure.num_indices, indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * figure.num_indices, indices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	glGenBuffers(1, &figure.buff_uvs);
 	glBindBuffer(GL_ARRAY_BUFFER, figure.buff_uvs);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLuint) * figure.num_uvs * 2, uv, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * figure.num_uvs * 2, uv, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	App->editor->LOG("----- Creating vertices (num: %d) -----", figure.num_vertices);
@@ -235,7 +237,8 @@ void ModulePrimitives::Draw(GameObject figure)
 	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 	glBindTexture(GL_TEXTURE_2D, figure.currentMaterial.textureID);
 
-	glDrawElements(GL_TRIANGLES, figure.num_indices, GL_UNSIGNED_INT, NULL);
+	if(figure.shape == FBX) glDrawElements(GL_TRIANGLES, figure.num_indices, GL_UNSIGNED_INT, NULL);
+	else glDrawElements(GL_TRIANGLES, figure.num_indices, GL_UNSIGNED_BYTE, NULL);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

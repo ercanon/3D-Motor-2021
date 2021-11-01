@@ -10,21 +10,17 @@
 #include "assimp/cimport.h"
 #include "assimp/scene.h"
 #include "assimp/postprocess.h"
-#include <assimp/Importer.hpp> 
 
-class ModuleFBX: public Module
+class ModuleFBX : public Module
 {
 public:
     ModuleFBX(Application* app, bool start_enabled = true);
 
     ~ModuleFBX();
 
-    bool Init();
-    bool CleanUp();
-    
     void LoadFbx(const char* file_path);
 
 private:
-    void InitFbx(const aiMesh* paiFbx, GameObject figure);
+    void InitMesh(GameObject figure, const aiMesh* paiMesh);
 };
 #endif
