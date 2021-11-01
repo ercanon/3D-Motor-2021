@@ -107,7 +107,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 		Position = Reference + Z * length(Position);
 
-		if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_DOWN && App->primitive->listFigures.At(App->editor->figNum) != nullptr)
+		if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_IDLE && App->primitive->listFigures.At(App->editor->figNum) != nullptr)
 		{
 			newPos = vec3(App->primitive->listFigures.At(App->editor->figNum)->data.position.x,
 				App->primitive->listFigures.At(App->editor->figNum)->data.position.y,
