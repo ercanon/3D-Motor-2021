@@ -5,8 +5,7 @@
 
 #pragma comment (lib, "assimp-vc142-mt.lib")
 
-
-ModuleFBX::ModuleFBX(Application* app, bool start_enabled) : Module (app, start_enabled)
+ModuleFBX::ModuleFBX(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 }
 
@@ -15,67 +14,38 @@ ModuleFBX::~ModuleFBX()
 {
 }
 
-bool ModuleFBX::Init()
-{
-    bool ret = true;
-
-    struct aiLogStream stream;
-    stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
-    aiAttachLogStream(&stream);
-
-    return ret;
-}
-
-bool ModuleFBX::CleanUp()
-{
-    bool ret = true;
-
-    App->editor->LOG("Cleaning up fbx loader");
-    aiDetachAllLogStreams();
-
-    return ret;
-}
-
 
 void ModuleFBX::LoadFbx(const char* file_path)
 {
-    const aiScene* scene = aiImportFile(file_path, aiProcessPreset_TargetRealtime_MaxQuality);
-    if (scene != nullptr)
+    const aiScene* pscene = aiImportFile(file_path, aiProcessPreset_TargetRealtime_MaxQuality);
+    if (pscene != nullptr)
     {
-        if (scene->HasMeshes())
-        {
-            GameObject figure;
-            for (int i = 0; i < scene->mNumMeshes; i++) {
-                figure.name = scene->mMeshes[i]->mName.C_Str();
-                const aiMesh* aiFbx = scene->mMeshes[i];
+        GameObject figure;
 
-                InitFbx(aiFbx, figure);
-            }
+        // Initialize the meshes in the scene one by one
+        for (unsigned int i = 0; i < pscene->mNumMeshes; i++) {
+            const aiMesh* paiMesh = pscene->mMeshes[i];
+            figure.name = pscene->mMeshes[i]->mName.C_Str();
+            App->editor->LOG("----- Creating primitive %s -----", figure.name.c_str());
+            InitMesh(figure, paiMesh);
         }
     }
     else App->editor->LOG("Error loading scene %s", file_path);
-
-    aiReleaseImport(scene);
 }
 
-
-void ModuleFBX::InitFbx(const aiMesh* aiMesh, GameObject figure)
+void ModuleFBX::InitMesh(GameObject figure, const aiMesh* paiMesh)
 {
-    std::vector<float> Vertices;
-    std::vector<int> Indices;
+    std::vector<float3> Vertices;
+    std::vector<unsigned int> Indices;
 
-    //const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
+    for (unsigned int i = 0; i < paiMesh->mNumVertices; i++) {
+        const aiVector3D* pPos = &(paiMesh->mVertices[i]);
 
-    for (int i = 0; i < aiMesh->mNumVertices; i++) {
-        //const aiVector3D* pTexCoord = aiMesh->HasTextureCoords(0) ? &(aiMesh->mTextureCoords[0][i]) : &Zero3D;
-
-        Vertices.push_back(float(aiMesh->mVertices[i].x));
-        Vertices.push_back(float(aiMesh->mVertices[i].y));
-        Vertices.push_back(float(aiMesh->mVertices[i].z));
+        Vertices.push_back(float3(pPos->x, pPos->y, pPos->z));
     }
 
-    for (int i = 0; i < aiMesh->mNumFaces; i++) {
-        const aiFace& Face = aiMesh->mFaces[i];
+    for (unsigned int i = 0; i < paiMesh->mNumFaces; i++) {
+        const aiFace& Face = paiMesh->mFaces[i];
         assert(Face.mNumIndices == 3);
         Indices.push_back(Face.mIndices[0]);
         Indices.push_back(Face.mIndices[1]);
@@ -85,19 +55,18 @@ void ModuleFBX::InitFbx(const aiMesh* aiMesh, GameObject figure)
     figure.num_vertices = Vertices.size();
     figure.num_indices = Indices.size();
     figure.shape = FBX;
-    //figure.num_uvs = aiMesh->mNumVertices;
+    figure.active = true;
 
-    glGenBuffers(1, (GLuint*)&(figure.buff_vertices));
+    glGenBuffers(1, &figure.buff_vertices);
     glBindBuffer(GL_ARRAY_BUFFER, figure.buff_vertices);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * figure.num_vertices * 3, &Vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float3) * Vertices.size(), &Vertices[0], GL_STATIC_DRAW);
 
-    glGenBuffers(1, (GLuint*)&(figure.buff_indices));
+    glGenBuffers(1, &figure.buff_indices);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, figure.buff_indices);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * figure.num_indices, &Indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * Indices.size(), &Indices[0], GL_STATIC_DRAW);
 
-    //glGenBuffers(1, (GLuint*)&(figure.buff_uvs));
-    //glBindBuffer(GL_ARRAY_BUFFER, figure.buff_uvs);
-    //glBufferData(GL_ARRAY_BUFFER, sizeof(float) * figure.num_uvs * 2, &Vertices[0].mTexture, GL_STATIC_DRAW);
+    App->editor->LOG("----- Creating vertices (num: %d) -----", figure.num_vertices);
+    App->editor->LOG("----- Creating buffer figure... -----");
 
     App->primitive->listFigures.Add(figure);
 }

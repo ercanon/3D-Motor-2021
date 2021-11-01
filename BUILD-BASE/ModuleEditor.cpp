@@ -383,21 +383,10 @@ update_status ModuleEditor::Update(float dt)
         
         for (int i = 0; i < App->primitive->listFigures.Count(); i++) 
         {
-            if (App->primitive->listFigures.At(i)->data.shape == CUBE)
+            const char* c = App->primitive->listFigures.At(i)->data.name.c_str();
+            if (ImGui::TreeNodeEx(c, 256))
             {
-                const char* c = App->primitive->listFigures.At(i)->data.name.c_str();
-                if (ImGui::TreeNodeEx(c, 256))
-                {
-                    ImGui::TreePop();
-                }
-            }
-            if (App->primitive->listFigures.At(i)->data.shape == PYRAMID)
-            {
-                const char* c = App->primitive->listFigures.At(i)->data.name.c_str();
-                if (ImGui::TreeNodeEx(c, 256))
-                {
-                    ImGui::TreePop();
-                }
+                ImGui::TreePop();
             }
             if (ImGui::IsItemClicked())
             {
@@ -405,7 +394,6 @@ update_status ModuleEditor::Update(float dt)
                 displayinfo = true;
             }
         }
-
         
         
         if (ImGui::GetWindowPos().x < 0 ||
