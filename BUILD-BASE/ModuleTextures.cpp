@@ -78,10 +78,11 @@ void ModuleTextures::LoadTextureBase()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkerImage);
-
 	material.texWidth = ilGetInteger(IL_IMAGE_WIDTH);
 	material.texHeight = ilGetInteger(IL_IMAGE_HEIGHT);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkerImage);
+
 	material.textureID = GLint(checkerImage);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -112,10 +113,10 @@ void ModuleTextures::LoadTextures(const char* file_path)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), 0, GL_RGBA, GL_UNSIGNED_BYTE, ilGetData());
-		
 		material.texWidth = ilGetInteger(IL_IMAGE_WIDTH);
 		material.texHeight = ilGetInteger(IL_IMAGE_HEIGHT);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), 0, GL_RGBA, GL_UNSIGNED_BYTE, ilGetData());
 
 		material.textureID = ilutGLBindTexImage();
 
