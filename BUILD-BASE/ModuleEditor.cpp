@@ -455,11 +455,6 @@ update_status ModuleEditor::Update(float dt)
             {
                 if (ImGui::TreeNode("Texture"))
                 {
-                    if (ImGui::Checkbox("UV Checker", &App->primitive->listFigures.At(figNum)->data.currentMaterial.checker))
-                    {
-                        if (App->primitive->listFigures.At(figNum)->data.currentMaterial.checker);
-                        else ;
-                    }
                     ImGui::Text("Texture width: %i", App->primitive->listFigures.At(figNum)->data.currentMaterial.texWidth);
                     ImGui::Text("Texture height: %i", App->primitive->listFigures.At(figNum)->data.currentMaterial.texHeight);
                     ImGui::Image((ImTextureID)App->primitive->listFigures.At(figNum)->data.currentMaterial.textureID, ImVec2(128, 128));

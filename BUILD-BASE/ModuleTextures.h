@@ -17,8 +17,6 @@ public:
 
 	int texWidth;
 	int texHeight;
-
-	bool checker;
 };
 
 class ModuleTextures : public Module
