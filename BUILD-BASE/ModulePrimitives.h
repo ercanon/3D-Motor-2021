@@ -33,14 +33,14 @@ public:
 
 	Shape shape;
 
-	uint buff_vertices;
-	uint num_vertices;
+	GLuint buff_vertices;
+	GLuint num_vertices;
 
-	uint buff_indices;
-	uint num_indices;
+	GLuint buff_indices;
+	GLuint num_indices;
 
-	uint buff_uvs;
-	uint num_uvs;
+	GLuint buff_uvs;
+	GLuint num_uvs;
 
 	Material currentMaterial;
 

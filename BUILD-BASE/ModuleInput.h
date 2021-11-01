@@ -63,6 +63,9 @@ public:
 
 	void LogInput(uint key, uint state);
 
+private:
+	//void CheckFile(const char* filedir);
+
 public:
 	KEY_STATE* keyboard;
 	KEY_STATE mouse_buttons[MAX_MOUSE_BUTTONS];
