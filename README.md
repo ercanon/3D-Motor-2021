@@ -16,10 +16,13 @@ Pau Motta: https://github.com/paumotta
 # Controls
 
 - WASD: Movement
-- Left click: select
-- Movement + SHIFT: speed x2.
-- F: focus the camera around the selected object.
 - Mouse wheel + Alt: Zoom
+- Left click: select
+- Alt + Left: rotation object
+- Movement + Alt + Left: free rotation
+- Movement + SHIFT: speed x2
+- F: focus the camera around the selected object.
+
 
 - Esc: Close the engine
 
