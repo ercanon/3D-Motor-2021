@@ -32,8 +32,6 @@ Pau Motta: https://github.com/paumotta
 - Mouse wheel + Alt: Zoom.
 - Esc: Close the engine.
 
-### ATENTION! Drag and drop for textures work ONLY before creating a geometry.
-
 ## Additional funcionality
 
 - If a windows gui is dropped out of the screen it goes back.
