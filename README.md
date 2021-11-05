@@ -36,3 +36,5 @@ Pau Motta: https://github.com/paumotta
 
 - If a windows gui is dropped out of the screen it goes back.
 - If the engine windows is changed, the windows gui will change to the size of the engine windows.
+
+### Code corrections came from: https://github.com/solidajenjo/Engine3D
