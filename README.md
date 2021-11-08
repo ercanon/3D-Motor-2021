@@ -3,7 +3,7 @@
 JaggyJiggy is an 3D engine ispired in Unity, developed by three students from CITM-UPC University from the degree of Design and development of Videogames.
 With this engine you can make your own games from scratch! 
 Has a family friendly interface and you use your knowloadge in C and C++ to programm.
-### NOW IN DEVELOPMENT.
+### DISCONTINUED.
 
 # Github
 
@@ -36,5 +36,3 @@ Pau Motta: https://github.com/paumotta
 
 - If a windows gui is dropped out of the screen it goes back.
 - If the engine windows is changed, the windows gui will change to the size of the engine windows.
-
-### Fork from: https://github.com/solidajenjo/Engine3D
