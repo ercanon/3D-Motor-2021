@@ -20,7 +20,7 @@ Alex Gesti: https://github.com/alexgesti
 
 Pau Motta: https://github.com/paumotta
 
-#Core Sub-systems
+# Core Sub-systems
 
 
 
@@ -48,11 +48,11 @@ Pau Motta: https://github.com/paumotta
 - If a windows gui is dropped out of the screen it goes back.
 - If the engine windows is changed, the windows gui will change to the size of the engine windows.
 
-#In-Game
+# In-Game
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/nn78wlwWRo4" title="YouTube video player" allowfullscreen></iframe>
 
-#License
+# License
 
 MIT License
 
