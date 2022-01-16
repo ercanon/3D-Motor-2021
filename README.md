@@ -50,7 +50,7 @@ Pau Motta: https://github.com/paumotta
 
 # In-Game
 
-<iframe  src="https://www.youtube.com/embed/nn78wlwWRo4" title="YouTube video player" </iframe>
+<iframe  src="https://www.youtube.com/embed/nn78wlwWRo4" </iframe>
 
 # License
 
